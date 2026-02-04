@@ -39,3 +39,6 @@ Thumbs.db
 .directory
 *.swp
 *~
+
+# environment variables
+src/main/resources/application-dev.yaml
