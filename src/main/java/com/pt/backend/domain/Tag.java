@@ -18,9 +18,15 @@ public class Tag {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @NonNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User owner;
+
     @Builder
-    public Tag(String name) {
+    public Tag(String name, User owner) {
         this.name = name;
+        this.owner = owner;
     }
 
 }

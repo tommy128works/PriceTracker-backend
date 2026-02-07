@@ -18,9 +18,15 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @NonNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User owner;
+
     @Builder
-    public Category(String name) {
+    public Category(String name, User owner) {
         this.name = name;
+        this.owner = owner;
     }
 
 }
