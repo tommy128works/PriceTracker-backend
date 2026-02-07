@@ -19,8 +19,8 @@ public class Category {
     private String name;
 
     @NonNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
     @Builder
