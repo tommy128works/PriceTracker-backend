@@ -7,7 +7,7 @@ import lombok.*;
 @Table(name = "categories")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
     @Id

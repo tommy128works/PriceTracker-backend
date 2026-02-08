@@ -7,7 +7,7 @@ import lombok.*;
 @Table(name = "deal_lists")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DealList {
 
     @Id
