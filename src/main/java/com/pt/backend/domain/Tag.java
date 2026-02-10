@@ -22,7 +22,10 @@ public class Tag {
     private User owner;
 
     @Builder
-    public Tag(@NonNull String name, @NonNull User owner) {
+    public Tag(
+            @NonNull String name,
+            @NonNull User owner
+    ) {
         this.name = name;
         this.owner = owner;
     }

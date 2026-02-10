@@ -27,7 +27,11 @@ public class DealListItem {
     private String note;
 
     @Builder
-    public DealListItem(@NonNull DealList dealList, @NonNull Deal deal, String note) {
+    public DealListItem(
+            @NonNull DealList dealList,
+            @NonNull Deal deal,
+            String note
+    ) {
         this.dealList = dealList;
         this.deal = deal;
         this.note = note;

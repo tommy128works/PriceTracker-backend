@@ -24,7 +24,11 @@ public class User {
     private String email;
 
     @Builder
-    public User(@NonNull String firstName, @NonNull String lastName, @NonNull String email) {
+    public User(
+            @NonNull String firstName,
+            @NonNull String lastName,
+            @NonNull String email
+    ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

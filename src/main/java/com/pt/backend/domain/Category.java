@@ -22,7 +22,10 @@ public class Category {
     private User owner;
 
     @Builder
-    public Category(@NonNull String name, @NonNull User owner) {
+    public Category(
+            @NonNull String name,
+            @NonNull User owner
+    ) {
         this.name = name;
         this.owner = owner;
     }

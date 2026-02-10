@@ -22,7 +22,10 @@ public class DealList {
     private User owner;
 
     @Builder
-    public DealList(@NonNull String name, @NonNull User owner) {
+    public DealList(
+            @NonNull String name,
+            @NonNull User owner
+    ) {
         this.name = name;
         this.owner = owner;
     }
