@@ -1,7 +1,11 @@
 package com.pt.backend.domain;
 
+import com.pt.backend.domain.Deal.Deal;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "categories")
@@ -20,6 +24,10 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Deal> deals = new HashSet<>();
+
 
     @Builder
     public Category(
