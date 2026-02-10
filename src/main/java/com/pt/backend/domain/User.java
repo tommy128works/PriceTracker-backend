@@ -14,20 +14,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(nullable = false)
     private String firstName;
 
-    @NonNull
     @Column(nullable = false)
     private String lastName;
 
-    @NonNull
     @Column(nullable = false, unique = true)
     private String email;
 
     @Builder
-    public User(String firstName, String lastName, String email) {
+    public User(@NonNull String firstName, @NonNull String lastName, @NonNull String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

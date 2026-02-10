@@ -14,17 +14,15 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(nullable = false, unique = true)
     private String name;
 
-    @NonNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
     @Builder
-    public Tag(String name, User owner) {
+    public Tag(@NonNull String name, @NonNull User owner) {
         this.name = name;
         this.owner = owner;
     }

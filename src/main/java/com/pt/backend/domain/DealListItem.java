@@ -15,20 +15,19 @@ public class DealListItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "deal_list_id", nullable = false)
     private DealList dealList;
 
-    @NonNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "deal_id", nullable = false)
     private Deal deal;
 
+    @Column(nullable = true)
     private String note;
 
     @Builder
-    public DealListItem(DealList dealList, Deal deal, String note) {
+    public DealListItem(@NonNull DealList dealList, @NonNull Deal deal, String note) {
         this.dealList = dealList;
         this.deal = deal;
         this.note = note;
