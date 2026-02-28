@@ -10,7 +10,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tags")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag {
 

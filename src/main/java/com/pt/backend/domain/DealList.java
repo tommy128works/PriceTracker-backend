@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "deal_lists")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DealList {
 

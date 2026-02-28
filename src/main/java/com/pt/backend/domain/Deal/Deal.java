@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "deals")
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Deal {
 
