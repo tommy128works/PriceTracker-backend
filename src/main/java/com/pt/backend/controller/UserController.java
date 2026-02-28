@@ -28,11 +28,6 @@ public class UserController {
         return userService.create(request);
     }
 
-    @PostMapping("/authenticate")
-    public UserView authenticate(@Valid @RequestBody AuthenticateUserRequest request) {
-        return userService.authenticate(request);
-    }
-
     @GetMapping("/{id}")
     public UserView getById(@PathVariable Long id) {
         return userService.getById(id);

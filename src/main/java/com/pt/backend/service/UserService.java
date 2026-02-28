@@ -60,8 +60,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (request.firstName() != null) user.setFirstName(request.firstName());
-        if (request.lastName() != null) user.setLastName(request.lastName());
+        user.updateName(request.firstName(), request.lastName());
 
         return toView(user);
     }
@@ -71,17 +70,6 @@ public class UserService {
             throw new EntityNotFoundException("User not found");
         }
         userRepository.deleteById(id);
-    }
-
-    public UserView authenticate(AuthenticateUserRequest request) {
-        User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
-        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid credentials");
-        }
-
-        return toView(user);
     }
 
     private UserView toView(User user) {
