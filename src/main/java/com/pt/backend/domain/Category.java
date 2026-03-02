@@ -21,11 +21,9 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)      temporarily nullable
-//    @JoinColumn(name = "user_id", nullable = false)           temporarily nullable
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "user_id", nullable = true)
-    private User owner;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToMany(mappedBy = "categories")
     private Set<Deal> deals = new HashSet<>();
@@ -34,11 +32,10 @@ public class Category {
     @Builder
     public Category(
             @NonNull String name,
-//            @NonNull User owner
-            User owner  // temporarily null
+            @NonNull User user
     ) {
         this.name = name;
-        this.owner = owner;
+        this.user = user;
     }
 
 }
