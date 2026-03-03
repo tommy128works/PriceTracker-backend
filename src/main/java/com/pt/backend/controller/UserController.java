@@ -28,27 +28,29 @@ public class UserController {
         return userService.create(request);
     }
 
-    @GetMapping("/{id}")
-    public UserView getById(@PathVariable Long id) {
-        return userService.getById(id);
-    }
-
-    @GetMapping
-    public List<UserView> getAll() {
-        return userService.getAll();
-    }
-
-    @PutMapping("/{id}")
-    public UserView update(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserRequest request
-    ) {
-        return userService.update(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
-    }
+    // Deactivate all admin endpoints below for now
+    // Admin role feature will be implemented in the future
+//    @GetMapping("/{id}")
+//    public UserView getById(@PathVariable Long id) {
+//        return userService.getById(id);
+//    }
+//
+//    @GetMapping
+//    public List<UserView> getAll() {
+//        return userService.getAll();
+//    }
+//
+//    @PutMapping("/{id}")
+//    public UserView update(
+//            @PathVariable Long id,
+//            @Valid @RequestBody UpdateUserRequest request
+//    ) {
+//        return userService.update(id, request);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void delete(@PathVariable Long id) {
+//        userService.delete(id);
+//    }
 }
