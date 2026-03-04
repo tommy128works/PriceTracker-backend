@@ -1,6 +1,7 @@
 package com.pt.backend.controller;
 
 
+import com.pt.backend.domain.User;
 import com.pt.backend.dto.user.AuthenticateUserRequest;
 import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UpdateUserRequest;
@@ -8,6 +9,7 @@ import com.pt.backend.dto.user.UserView;
 import com.pt.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,24 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserView create(@Valid @RequestBody CreateUserRequest request) {
         return userService.create(request);
+    }
+
+    @GetMapping("/me")
+    public UserView getCurrentUser(@AuthenticationPrincipal User currentUser) {
+        return userService.getCurrentUser(currentUser);
+    }
+
+    @PutMapping("/me")
+    public UserView updateCurrentUser(
+            @AuthenticationPrincipal User currentUser,
+            @Valid @RequestBody UpdateUserRequest request
+    ) {
+        return userService.updateCurrentUser(currentUser, request);
+    }
+
+    @DeleteMapping("/me")
+    public void deleteCurrentUser(@AuthenticationPrincipal User currentUser) {
+        userService.deleteCurrentUser(currentUser);
     }
 
     // Deactivate all admin endpoints below for now

@@ -43,6 +43,19 @@ public class UserService {
         return toView(saved);
     }
 
+    public UserView getCurrentUser(User currentUser) {
+        return toView(currentUser);
+    }
+
+    public UserView updateCurrentUser(User currentUser, UpdateUserRequest request) {
+        currentUser.updateName(request.firstName(), request.lastName());
+        return toView(userRepository.save(currentUser));
+    }
+
+    public void deleteCurrentUser(User currentUser) {
+        userRepository.delete(currentUser);
+    }
+
     public UserView getById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
