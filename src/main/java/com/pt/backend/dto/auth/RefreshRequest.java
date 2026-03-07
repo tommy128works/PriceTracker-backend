@@ -1,6 +1,5 @@
 package com.pt.backend.dto.auth;
 
-public record JwtResponse(
-        String accessToken,
+public record RefreshRequest(
         String refreshToken
 ) {}
