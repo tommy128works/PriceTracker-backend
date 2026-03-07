@@ -4,15 +4,17 @@ package com.pt.backend.controller;
 import com.pt.backend.domain.User;
 import com.pt.backend.dto.auth.JwtResponse;
 import com.pt.backend.dto.auth.AuthenticateUserRequest;
+import com.pt.backend.dto.user.CreateUserRequest;
+import com.pt.backend.dto.user.UserView;
 import com.pt.backend.security.JwtService;
+import com.pt.backend.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,13 +22,22 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserService userService;
 
     public AuthController(
             AuthenticationManager authenticationManager,
-            JwtService jwtService
+            JwtService jwtService,
+            UserService userService
     ) throws Exception {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserView create(@Valid @RequestBody CreateUserRequest request) {
+        return userService.create(request);
     }
 
     @PostMapping("/login")
