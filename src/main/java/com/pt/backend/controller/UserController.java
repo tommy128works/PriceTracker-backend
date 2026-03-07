@@ -2,7 +2,6 @@ package com.pt.backend.controller;
 
 
 import com.pt.backend.domain.User;
-import com.pt.backend.dto.user.AuthenticateUserRequest;
 import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UpdateUserRequest;
 import com.pt.backend.dto.user.UserView;
@@ -11,8 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")

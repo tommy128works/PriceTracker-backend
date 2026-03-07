@@ -2,7 +2,6 @@ package com.pt.backend.service;
 
 
 import com.pt.backend.domain.User;
-import com.pt.backend.dto.user.AuthenticateUserRequest;
 import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UpdateUserRequest;
 import com.pt.backend.dto.user.UserView;
