@@ -2,12 +2,10 @@ package com.pt.backend.controller;
 
 
 import com.pt.backend.domain.User;
-import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UpdateUserRequest;
 import com.pt.backend.dto.user.UserView;
 import com.pt.backend.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +17,6 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserView create(@Valid @RequestBody CreateUserRequest request) {
-        return userService.create(request);
     }
 
     @GetMapping("/me")
@@ -47,6 +39,13 @@ public class UserController {
 
     // Deactivate all admin endpoints below for now
     // Admin role feature will be implemented in the future
+
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserView create(@Valid @RequestBody CreateUserRequest request) {
+//        return userService.create(request);
+//    }
+
 //    @GetMapping("/{id}")
 //    public UserView getById(@PathVariable Long id) {
 //        return userService.getById(id);
