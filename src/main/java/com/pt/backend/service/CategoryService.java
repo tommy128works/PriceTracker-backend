@@ -24,6 +24,10 @@ public class CategoryService {
     }
 
     public CategoryView create(CreateCategoryRequest request, User currentUser) {
+        if (categoryRepository.existsByNameAndUserId(request.name(), currentUser.getId())) {
+            throw new IllegalStateException("Category already exists for this user");
+        }
+
         Category category = Category.builder()
                 .name(request.name())
                 .user(currentUser)

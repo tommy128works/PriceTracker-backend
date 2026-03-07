@@ -8,7 +8,12 @@ import java.util.Set;
 import java.util.HashSet;
 
 @Entity
-@Table(name = "categories")
+@Table(
+        name = "categories",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name", "user_id"})
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
@@ -18,7 +23,7 @@ public class Category {
     private Long id;
 
     @Setter
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
