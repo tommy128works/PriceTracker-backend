@@ -59,7 +59,7 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
 
         String accessToken = jwtService.generateToken(user);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        RefreshToken refreshToken = refreshTokenService.createToken(user);
 
         return ResponseEntity.ok(
                 new JwtResponse(accessToken, refreshToken.getToken())
@@ -73,7 +73,7 @@ public class AuthController {
         User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
-        RefreshToken newToken = refreshTokenService.createRefreshToken(user);
+        RefreshToken newToken = refreshTokenService.createToken(user);
 
         return ResponseEntity.ok(
                 new JwtResponse(accessToken, newToken.getToken())

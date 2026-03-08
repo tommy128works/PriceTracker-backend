@@ -22,7 +22,7 @@ public class RefreshTokenService {
         this.repository = repository;
     }
 
-    public RefreshToken createRefreshToken(User user) {
+    public RefreshToken createToken(User user) {
 
         RefreshToken token = RefreshToken.builder()
                 .token(UUID.randomUUID().toString())
