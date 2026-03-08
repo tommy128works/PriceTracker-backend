@@ -39,11 +39,6 @@ public class RefreshTokenService {
                 .orElseThrow(() ->
                         new RuntimeException("Invalid refresh token"));
 
-        return token;
-    }
-
-    public RefreshToken verifyExpiration(RefreshToken token) {
-
         if (token.getExpiryDate().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token expired");
         }

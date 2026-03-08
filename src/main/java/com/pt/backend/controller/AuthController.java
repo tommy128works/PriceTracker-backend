@@ -71,8 +71,6 @@ public class AuthController {
 
         RefreshToken oldToken = refreshTokenService.verifyToken(request);
 
-        refreshTokenService.verifyExpiration(oldToken);
-
         User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
