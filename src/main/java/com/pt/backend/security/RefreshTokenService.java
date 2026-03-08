@@ -39,15 +39,13 @@ public class RefreshTokenService {
                 .orElseThrow(() ->
                         new RuntimeException("Invalid refresh token"));
 
+        repository.delete(token);
+
         if (token.getExpiryDate().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token expired");
         }
 
         return token;
-    }
-
-    public void delete(RefreshToken token) {
-        repository.delete(token);
     }
 
 }

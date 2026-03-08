@@ -70,14 +70,10 @@ public class AuthController {
     public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody RefreshRequest request) {
 
         RefreshToken oldToken = refreshTokenService.verifyToken(request);
-
         User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
-
         RefreshToken newToken = refreshTokenService.createRefreshToken(user);
-
-        refreshTokenService.delete(oldToken);
 
         return ResponseEntity.ok(
                 new JwtResponse(accessToken, newToken.getToken())
