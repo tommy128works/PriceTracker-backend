@@ -3,6 +3,7 @@ package com.pt.backend.security;
 
 import com.pt.backend.domain.RefreshToken;
 import com.pt.backend.domain.User;
+import com.pt.backend.dto.auth.RefreshRequest;
 import com.pt.backend.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -32,13 +33,26 @@ public class RefreshTokenService {
         return repository.save(token);
     }
 
+    public RefreshToken verifyToken(RefreshRequest request) {
+        RefreshToken token = repository
+                .findByToken(request.refreshToken())
+                .orElseThrow(() ->
+                        new RuntimeException("Invalid refresh token"));
+
+        return token;
+    }
+
     public RefreshToken verifyExpiration(RefreshToken token) {
 
         if (token.getExpiryDate().isBefore(Instant.now())) {
-//            repository.delete(token); // for now, keep records
             throw new RuntimeException("Refresh token expired");
         }
 
         return token;
     }
+
+    public void delete(RefreshToken token) {
+        repository.delete(token);
+    }
+
 }

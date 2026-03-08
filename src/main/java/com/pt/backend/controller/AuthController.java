@@ -8,7 +8,6 @@ import com.pt.backend.dto.auth.AuthenticateUserRequest;
 import com.pt.backend.dto.auth.RefreshRequest;
 import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UserView;
-import com.pt.backend.repository.RefreshTokenRepository;
 import com.pt.backend.security.JwtService;
 import com.pt.backend.security.RefreshTokenService;
 import com.pt.backend.service.UserService;
@@ -28,20 +27,17 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public AuthController(
             AuthenticationManager authenticationManager,
             JwtService jwtService,
             UserService userService,
-            RefreshTokenService refreshTokenService,
-            RefreshTokenRepository refreshTokenRepository
+            RefreshTokenService refreshTokenService
     ) throws Exception {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userService = userService;
         this.refreshTokenService = refreshTokenService;
-        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @PostMapping("/register")
@@ -73,19 +69,20 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody RefreshRequest request) {
 
-        RefreshToken token = refreshTokenRepository
-                .findByToken(request.refreshToken())
-                .orElseThrow(() ->
-                        new RuntimeException("Invalid refresh token"));
+        RefreshToken oldToken = refreshTokenService.verifyToken(request);
 
-        refreshTokenService.verifyExpiration(token);
+        refreshTokenService.verifyExpiration(oldToken);
 
-        User user = token.getUser();
+        User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
 
+        RefreshToken newToken = refreshTokenService.createRefreshToken(user);
+
+        refreshTokenService.delete(oldToken);
+
         return ResponseEntity.ok(
-                new JwtResponse(accessToken, token.getToken())
+                new JwtResponse(accessToken, newToken.getToken())
         );
     }
 
