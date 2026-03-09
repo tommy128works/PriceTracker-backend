@@ -25,9 +25,12 @@ public class RefreshTokenService {
     private final String HMAC_ALGO = "HmacSHA256";
     private final byte[] SECRET_KEY;
 
+    @Value("${refresh-token.expiration}")
+    private int expirationDays;
+
     public RefreshTokenService(
             RefreshTokenRepository repository,
-            @Value("${hmac.secret}") String secret
+            @Value("${refresh-token.hmac-secret}") String secret
     ) {
         this.repository = repository;
         this.SECRET_KEY = secret.getBytes(StandardCharsets.UTF_8);
@@ -38,7 +41,7 @@ public class RefreshTokenService {
 
         RefreshToken tokenHash = RefreshToken.builder()
                 .tokenHash(hashToken(rawToken))
-                .expiryDate(Instant.now().plus(16, ChronoUnit.DAYS))
+                .expiryDate(Instant.now().plus(expirationDays, ChronoUnit.DAYS))
                 .user(user)
                 .build();
         repository.save(tokenHash);
