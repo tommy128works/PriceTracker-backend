@@ -17,7 +17,7 @@ public class RefreshToken {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String token;
+    private String tokenHash;
 
     @Column(nullable = false)
     private Instant expiryDate;
@@ -31,11 +31,11 @@ public class RefreshToken {
 
     @Builder
     public RefreshToken(
-            @NonNull String token,
+            @NonNull String tokenHash,
             @NonNull Instant expiryDate,
             @NonNull User user
     ) {
-        this.token = token;
+        this.tokenHash = tokenHash;
         this.expiryDate = expiryDate;
         this.user = user;
     }

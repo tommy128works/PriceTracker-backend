@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@Valid @RequestBody AuthenticateUserRequest request) {
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody AuthenticateUserRequest request) throws Exception {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -59,24 +59,24 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
 
         String accessToken = jwtService.generateToken(user);
-        RefreshToken refreshToken = refreshTokenService.createToken(user);
+        String refreshToken = refreshTokenService.createToken(user);
 
         return ResponseEntity.ok(
-                new JwtResponse(accessToken, refreshToken.getToken())
+                new JwtResponse(accessToken, refreshToken)
         );
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody RefreshRequest request) {
+    public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody RefreshRequest request) throws Exception {
 
         RefreshToken oldToken = refreshTokenService.verifyToken(request);
         User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
-        RefreshToken newToken = refreshTokenService.createToken(user);
+        String newToken = refreshTokenService.createToken(user);
 
         return ResponseEntity.ok(
-                new JwtResponse(accessToken, newToken.getToken())
+                new JwtResponse(accessToken, newToken)
         );
     }
 
