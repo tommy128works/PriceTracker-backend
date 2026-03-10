@@ -26,6 +26,7 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository repository;
     private final String HMAC_ALGO = "HmacSHA256";
+    private final String COOKIE_PATH = "/api/auth";
     private final byte[] secretKey;
     private final int expirationDays;
 
@@ -56,7 +57,7 @@ public class RefreshTokenService {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", rawToken)
                 .httpOnly(true)
                 .secure(true)
-                .path("/api/auth/refresh")
+                .path(COOKIE_PATH)
                 .maxAge(Duration.ofDays(expirationDays))
                 .sameSite("Strict")
                 .build();
@@ -94,6 +95,22 @@ public class RefreshTokenService {
         }
 
         return storedTokenHash;
+    }
+
+    public void deleteToken(String token) throws Exception {
+        String tokenHash = hashToken(token);
+        repository.deleteByTokenHash(tokenHash);
+    }
+
+    public void deleteCookie(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path(COOKIE_PATH)
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
 }
