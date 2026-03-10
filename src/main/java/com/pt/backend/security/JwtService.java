@@ -15,11 +15,16 @@ import java.util.Date;
 @Transactional
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private final String secretKey;
+    private final long expirationMillis;
 
-    @Value("${jwt.expiration}")
-    private long expirationMillis;
+    public JwtService(
+            @Value("${jwt.access.secret}") String secretKey,
+            @Value("${jwt.access.expiration}") long expirationMillis
+    ) {
+        this.secretKey = secretKey;
+        this.expirationMillis = expirationMillis;
+    }
 
     public String generateToken(User user) {
 
@@ -27,14 +32,14 @@ public class JwtService {
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
-                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()),
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()),
                         SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY.getBytes())
+                .setSigningKey(secretKey.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()

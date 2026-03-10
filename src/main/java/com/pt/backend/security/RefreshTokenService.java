@@ -26,17 +26,17 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository repository;
     private final String HMAC_ALGO = "HmacSHA256";
-    private final byte[] SECRET_KEY;
-
-    @Value("${refresh-token.expiration}")
-    private int expirationDays;
+    private final byte[] secretKey;
+    private final int expirationDays;
 
     public RefreshTokenService(
             RefreshTokenRepository repository,
-            @Value("${refresh-token.hmac-secret}") String secret
+            @Value("${jwt.refresh.hmac.secret}") String secret,
+            @Value("${jwt.refresh.expiration}") int expirationDays
     ) {
         this.repository = repository;
-        this.SECRET_KEY = secret.getBytes(StandardCharsets.UTF_8);
+        this.secretKey = secret.getBytes(StandardCharsets.UTF_8);
+        this.expirationDays = expirationDays;
     }
 
     public String createToken(
@@ -73,7 +73,7 @@ public class RefreshTokenService {
 
     public String hashToken(String token) throws Exception {
         Mac mac = Mac.getInstance(HMAC_ALGO);
-        SecretKeySpec keySpec = new SecretKeySpec(SECRET_KEY, HMAC_ALGO);
+        SecretKeySpec keySpec = new SecretKeySpec(secretKey, HMAC_ALGO);
         mac.init(keySpec);
         byte[] hmac = mac.doFinal(token.getBytes());
         return Base64.getEncoder().encodeToString(hmac);
