@@ -5,12 +5,12 @@ import com.pt.backend.domain.RefreshToken;
 import com.pt.backend.domain.User;
 import com.pt.backend.dto.auth.JwtResponse;
 import com.pt.backend.dto.auth.AuthenticateUserRequest;
-import com.pt.backend.dto.auth.RefreshRequest;
 import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UserView;
 import com.pt.backend.security.JwtService;
 import com.pt.backend.security.RefreshTokenService;
 import com.pt.backend.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@Valid @RequestBody AuthenticateUserRequest request) throws Exception {
+    public ResponseEntity<JwtResponse> login(
+            @Valid @RequestBody AuthenticateUserRequest request,
+            HttpServletResponse response
+    ) throws Exception {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -59,24 +62,27 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
 
         String accessToken = jwtService.generateToken(user);
-        String refreshToken = refreshTokenService.createToken(user);
+        refreshTokenService.createToken(user, response);
 
         return ResponseEntity.ok(
-                new JwtResponse(accessToken, refreshToken)
+                new JwtResponse(accessToken)
         );
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody RefreshRequest request) throws Exception {
+    public ResponseEntity<JwtResponse> refresh(
+            @CookieValue("refreshToken") String refreshToken,
+            HttpServletResponse response
+    ) throws Exception {
 
-        RefreshToken oldToken = refreshTokenService.verifyToken(request);
+        RefreshToken oldToken = refreshTokenService.verifyToken(refreshToken);
         User user = oldToken.getUser();
 
         String accessToken = jwtService.generateToken(user);
-        String newToken = refreshTokenService.createToken(user);
+        refreshTokenService.createToken(user, response);
 
         return ResponseEntity.ok(
-                new JwtResponse(accessToken, newToken)
+                new JwtResponse(accessToken)
         );
     }
 
