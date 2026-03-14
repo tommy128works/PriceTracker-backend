@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "deal_lists")
+@Table(
+        name = "deal_lists",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"name", "user_id"})
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DealList {
@@ -13,20 +18,21 @@ public class DealList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Setter
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User owner;
+    private User user;
 
     @Builder
     public DealList(
             @NonNull String name,
-            @NonNull User owner
+            @NonNull User user
     ) {
         this.name = name;
-        this.owner = owner;
+        this.user = user;
     }
 
 }
