@@ -1,7 +1,7 @@
 package com.pt.backend.controller;
 
 import com.pt.backend.domain.User;
-import com.pt.backend.dto.category.CategoryRequest;
+import com.pt.backend.dto.category.UpdateCategoryRequest;
 import com.pt.backend.dto.category.CategoryView;
 import com.pt.backend.dto.category.CreateCategoryRequest;
 import com.pt.backend.service.CategoryService;
@@ -49,7 +49,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public CategoryView update(
             @PathVariable Long id,
-            @Valid @RequestBody CategoryRequest request,
+            @Valid @RequestBody UpdateCategoryRequest request,
             @AuthenticationPrincipal User currentUser
     ) {
         return categoryService.update(id, request, currentUser);

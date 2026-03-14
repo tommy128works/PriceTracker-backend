@@ -3,7 +3,7 @@ package com.pt.backend.service;
 
 import com.pt.backend.domain.Category;
 import com.pt.backend.domain.User;
-import com.pt.backend.dto.category.CategoryRequest;
+import com.pt.backend.dto.category.UpdateCategoryRequest;
 import com.pt.backend.dto.category.CategoryView;
 import com.pt.backend.dto.category.CreateCategoryRequest;
 import com.pt.backend.repository.CategoryRepository;
@@ -53,7 +53,7 @@ public class CategoryService {
                 .toList();
     }
 
-    public CategoryView update(Long id, CategoryRequest request, User currentUser) {
+    public CategoryView update(Long id, UpdateCategoryRequest request, User currentUser) {
         Category category = categoryRepository
                 .findByIdAndUserId(id, currentUser.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
