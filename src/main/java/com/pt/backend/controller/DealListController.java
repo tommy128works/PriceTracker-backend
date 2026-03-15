@@ -29,7 +29,7 @@ public class DealListController {
             @Valid @RequestBody CreateDealListRequest request,
             @AuthenticationPrincipal User currentUser
     ) {
-        DealListView response = dealListService.createDealList(request, currentUser);
+        DealListView response = dealListService.create(request, currentUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

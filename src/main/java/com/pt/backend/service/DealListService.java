@@ -22,7 +22,7 @@ public class DealListService {
         this.dealListRepository = dealListRepository;
     }
 
-    public DealListView createDealList(CreateDealListRequest request, User currentUser) {
+    public DealListView create(CreateDealListRequest request, User currentUser) {
         if (dealListRepository.existsByNameAndUserId(request.name(), currentUser.getId())) {
             throw new IllegalStateException("Deal list already exists for this user");
         }
