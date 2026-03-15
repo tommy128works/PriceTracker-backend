@@ -25,7 +25,7 @@ public class DealListController {
     }
 
     @PostMapping
-    public ResponseEntity<DealListView> createDealList(
+    public ResponseEntity<DealListView> create(
             @Valid @RequestBody CreateDealListRequest request,
             @AuthenticationPrincipal User currentUser
     ) {
