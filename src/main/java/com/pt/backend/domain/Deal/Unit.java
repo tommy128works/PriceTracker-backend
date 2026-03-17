@@ -1,7 +1,11 @@
 package com.pt.backend.domain.Deal;
 
 public enum Unit {
-    GRAM,
-    MILLILITER,
-    EACH
+    EACH,
+    G,
+    ML
+//    KG,
+//    LB,
+//    OZ,
+//    L
 }

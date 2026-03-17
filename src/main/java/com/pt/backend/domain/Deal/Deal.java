@@ -35,7 +35,6 @@ public class Deal {
     @Column(nullable = false)
     private Quantity quantity;
 
-    @Size(min = 1)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "deal_category",
@@ -44,7 +43,6 @@ public class Deal {
     )
     private Set<Category> categories = new HashSet<>();
 
-    @Size(min = 1)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "deal_tag",
@@ -58,22 +56,22 @@ public class Deal {
             @NonNull String name,
             @NonNull User owner,
             @NonNull Money price,
-            @NonNull Quantity quantity,
-            @NonNull Set<Category> categories,
-            @NonNull Set<Tag> tags
+            @NonNull Quantity quantity
+//            @NonNull Set<Category> categories,
+//            @NonNull Set<Tag> tags
     ) {
-        if (categories.isEmpty()) {
-            throw new IllegalArgumentException("Deal must have at least one category");
-        }
-        if (tags.isEmpty()) {
-            throw new IllegalArgumentException("Deal must have at least one tag");
-        }
+//        if (categories.isEmpty()) {
+//            throw new IllegalArgumentException("Deal must have at least one category");
+//        }
+//        if (tags.isEmpty()) {
+//            throw new IllegalArgumentException("Deal must have at least one tag");
+//        }
         this.name = name;
         this.owner = owner;
         this.price = price;
         this.quantity = quantity;
-        this.categories = new HashSet<>(categories);
-        this.tags = new HashSet<>(tags);
+//        this.categories = new HashSet<>(categories);
+//        this.tags = new HashSet<>(tags);
     }
 
 

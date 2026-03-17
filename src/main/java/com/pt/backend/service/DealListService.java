@@ -36,6 +36,14 @@ public class DealListService {
         return toView(saved);
     }
 
+    public DealList getEntityById(Long id, User currentUser) {
+        DealList dealList = dealListRepository
+                .findByIdAndUserId(id, currentUser.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Deal list not found"));
+
+        return dealList;
+    }
+
     public DealListView getById(Long id, User currentUser) {
         DealList dealList = dealListRepository
                 .findByIdAndUserId(id, currentUser.getId())

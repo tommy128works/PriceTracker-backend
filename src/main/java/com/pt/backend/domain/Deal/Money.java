@@ -15,12 +15,12 @@ public class Money {
     @Column(length = 3, nullable = false)
     private String currency;
 
-    public Money(Long amountCents, Currency currency) {
+    public Money(Long amountCents, String currency) {
         this.amountCents = amountCents;
-        this.currency = currency.getCurrencyCode();
+        this.currency = currency;
     }
 
-    public Currency getCurrency() {
-        return Currency.getInstance(this.currency);
-    }
+//    public Currency getCurrency() {
+//        return Currency.getInstance(this.currency);
+//    }
 }
