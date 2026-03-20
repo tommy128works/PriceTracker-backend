@@ -5,7 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "deal_list_items")
+@Table(
+        name = "deal_list_items",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"deal_list_id", "deal_id"})
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DealListItem {

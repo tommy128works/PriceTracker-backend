@@ -9,8 +9,11 @@ import com.pt.backend.dto.deal.CreateDealRequest;
 import com.pt.backend.dto.dealListItem.CreateDealListItemRequest;
 import com.pt.backend.dto.dealListItem.DealListItemView;
 import com.pt.backend.repository.DealListItemRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -50,6 +53,23 @@ public class DealListItemService {
         DealListItem saved = dealListItemRepository.save(dealListItem);
 
         return toView(saved);
+    }
+
+    public DealListItemView getById(
+            Long listId,
+            Long dealId,
+            User currentUser
+    ) {
+        DealListItem dealListItem = dealListItemRepository
+                .findByDealListIdAndDealId(listId, dealId)
+                .orElseThrow(() -> new EntityNotFoundException("Deal list item not found"));
+
+        Long dealListUserId = dealListItem.getDealList().getUser().getId();
+        if (!dealListUserId.equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not own this deal list");
+        }
+
+        return toView(dealListItem);
     }
 
     public DealListItemView toView(DealListItem dealListItem) {

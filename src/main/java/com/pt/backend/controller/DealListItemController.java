@@ -20,12 +20,6 @@ public class DealListItemController {
         this.dealListItemService = dealListItemService;
     }
 
-    // REMEMBER THERE IS NO DealController
-    //    PUT /deal-lists/{listId}/items/{dealId} → update note
-    //    DELETE /deal-lists/{listId}/items/{dealId} → remove deal from list
-
-
-
     //    POST /deal-lists/{listId}/items
     //    Creates a deal and adds it to the list
     @PostMapping
@@ -38,20 +32,22 @@ public class DealListItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    // GET /deal-lists/{listId}/items/{dealId}
+    // READ: Get a single item
+    @GetMapping("/{dealId}")
+    public ResponseEntity<DealListItemView> getById(
+            @PathVariable Long listId,
+            @PathVariable Long dealId,
+            @AuthenticationPrincipal User currentUser) {
 
+        return ResponseEntity.ok(dealListItemService.getById(listId, dealId, currentUser));
+    }
 
     /* UNFILTERED BELOW
 
-    // READ: Get a single item
-    @GetMapping("/{dealId}")
-    public ResponseEntity<DealListItemDto> getItem(
-            @PathVariable Long listId,
-            @PathVariable Long dealId,
-            @AuthenticationPrincipal CustomUserDetails user) {
-
-        DealListItemDto item = dealListItemService.getItem(listId, dealId, user.getId());
-        return ResponseEntity.ok(item);
-    }
+    // REMEMBER THERE IS NO DealController
+    //    PUT /deal-lists/{listId}/items/{dealId} → update note
+    //    DELETE /deal-lists/{listId}/items/{dealId} → remove deal from list
 
     // UPDATE: Update note for a deal in the list
     @PutMapping("/{dealId}")
