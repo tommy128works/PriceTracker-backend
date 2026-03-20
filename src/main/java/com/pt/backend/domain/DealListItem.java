@@ -27,6 +27,7 @@ public class DealListItem {
     @JoinColumn(name = "deal_id", nullable = false)
     private Deal deal;
 
+    @Setter
     @Column(nullable = true)
     private String note;
 

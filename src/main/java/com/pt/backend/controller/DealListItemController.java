@@ -3,6 +3,7 @@ package com.pt.backend.controller;
 import com.pt.backend.domain.User;
 import com.pt.backend.dto.dealListItem.CreateDealListItemRequest;
 import com.pt.backend.dto.dealListItem.DealListItemView;
+import com.pt.backend.dto.dealListItem.UpdateDealListItemRequest;
 import com.pt.backend.service.DealListItemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -40,8 +41,8 @@ public class DealListItemController {
     public ResponseEntity<DealListItemView> getById(
             @PathVariable Long listId,
             @PathVariable Long dealId,
-            @AuthenticationPrincipal User currentUser) {
-
+            @AuthenticationPrincipal User currentUser
+    ) {
         return ResponseEntity.ok(
                 dealListItemService.getById(listId, dealId, currentUser)
         );
@@ -52,30 +53,35 @@ public class DealListItemController {
     @GetMapping
     public ResponseEntity<List<DealListItemView>> getAll(
             @PathVariable Long listId,
-            @AuthenticationPrincipal User currentUser) {
+            @AuthenticationPrincipal User currentUser
+    ) {
         return ResponseEntity.ok(
                 dealListItemService.getAll(listId, currentUser)
         );
     }
 
-    /* UNFILTERED BELOW
-
-    // REMEMBER THERE IS NO DealController
-    //    PUT /deal-lists/{listId}/items/{dealId} → update note
-    //    DELETE /deal-lists/{listId}/items/{dealId} → remove deal from list
-
+    // PUT /deal-lists/{listId}/items/{dealId} → update note
     // UPDATE: Update note for a deal in the list
     @PutMapping("/{dealId}")
-    public ResponseEntity<DealListItemDto> updateItem(
+    public ResponseEntity<DealListItemView> update(
             @PathVariable Long listId,
             @PathVariable Long dealId,
-            @RequestBody DealListItemDto dto,
-            @AuthenticationPrincipal CustomUserDetails user) {
-
-        DealListItemDto updated = dealListItemService.updateNote(listId, dealId, dto, user.getId());
-        return ResponseEntity.ok(updated);
+            @Valid @RequestBody UpdateDealListItemRequest request,
+            @AuthenticationPrincipal User currentUser
+    ) {
+        return ResponseEntity.ok(
+                dealListItemService.update(
+                        listId,
+                        dealId,
+                        request,
+                        currentUser
+                )
+        );
     }
 
+    /* UNFILTERED BELOW
+
+    //    DELETE /deal-lists/{listId}/items/{dealId} → remove deal from list
     // DELETE: Remove a deal from the list
     @DeleteMapping("/{dealId}")
     public ResponseEntity<Void> deleteItem(

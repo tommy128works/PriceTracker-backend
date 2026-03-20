@@ -8,6 +8,7 @@ import com.pt.backend.domain.User;
 import com.pt.backend.dto.deal.CreateDealRequest;
 import com.pt.backend.dto.dealListItem.CreateDealListItemRequest;
 import com.pt.backend.dto.dealListItem.DealListItemView;
+import com.pt.backend.dto.dealListItem.UpdateDealListItemRequest;
 import com.pt.backend.repository.DealListItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -63,14 +64,8 @@ public class DealListItemService {
             User currentUser
     ) {
         DealListItem dealListItem = dealListItemRepository
-                .findByDealListIdAndDealId(listId, dealId)
+                .findByDealListIdAndDealListUserIdAndDealId(listId, currentUser.getId(), dealId)
                 .orElseThrow(() -> new EntityNotFoundException("Deal list item not found"));
-
-        Long dealListUserId = dealListItem.getDealList().getUser().getId();
-        if (!dealListUserId.equals(currentUser.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not own this deal list");
-        }
-
         return toView(dealListItem);
     }
 
@@ -80,6 +75,19 @@ public class DealListItemService {
                 .stream()
                 .map(this::toView)
                 .toList();
+    }
+
+    public DealListItemView update(
+            Long listId,
+            Long dealId,
+            UpdateDealListItemRequest request,
+            User currentUser
+    ) {
+        DealListItem dealListItem = dealListItemRepository
+                .findByDealListIdAndDealListUserIdAndDealId(listId, currentUser.getId(), dealId)
+                .orElseThrow(() -> new EntityNotFoundException("Deal list item not found"));
+        dealListItem.setNote(request.note());
+        return toView(dealListItem);
     }
 
     public DealListItemView toView(DealListItem dealListItem) {

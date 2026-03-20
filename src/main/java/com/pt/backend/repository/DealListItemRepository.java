@@ -10,8 +10,9 @@ import java.util.Optional;
 @Repository
 public interface DealListItemRepository
         extends JpaRepository<DealListItem, Long> {
-    Optional<DealListItem> findByDealListIdAndDealId(
+    Optional<DealListItem> findByDealListIdAndDealListUserIdAndDealId(
             Long dealListId,
+            Long userId,
             Long dealId
     );
     List<DealListItem> findAllByDealListIdAndDealListUserId(
