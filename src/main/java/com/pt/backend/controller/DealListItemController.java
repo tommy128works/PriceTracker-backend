@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/deal-lists/{listId}/items")
 public class DealListItemController {
@@ -45,6 +47,17 @@ public class DealListItemController {
         );
     }
 
+    // GET /deal-lists/{listId}/items
+    // READ: Get all items of a specific deal list
+    @GetMapping
+    public ResponseEntity<List<DealListItemView>> getAll(
+            @PathVariable Long listId,
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(
+                dealListItemService.getAll(listId, currentUser)
+        );
+    }
+
     /* UNFILTERED BELOW
 
     // REMEMBER THERE IS NO DealController
@@ -72,16 +85,6 @@ public class DealListItemController {
 
         dealListItemService.removeDealFromList(listId, dealId, user.getId());
         return ResponseEntity.noContent().build();
-    }
-
-    // OPTIONAL: List all items in the list
-    @GetMapping
-    public ResponseEntity<List<DealListItemDto>> getAllItems(
-            @PathVariable Long listId,
-            @AuthenticationPrincipal CustomUserDetails user) {
-
-        List<DealListItemDto> items = dealListItemService.getAllItems(listId, user.getId());
-        return ResponseEntity.ok(items);
     }
 
     */

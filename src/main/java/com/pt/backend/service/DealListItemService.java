@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class DealListItemService {
@@ -72,6 +74,14 @@ public class DealListItemService {
         return toView(dealListItem);
     }
 
+    public List<DealListItemView> getAll(Long listId, User currentUser) {
+        return dealListItemRepository
+                .findAllByDealListIdAndDealListUserId(listId, currentUser.getId())
+                .stream()
+                .map(this::toView)
+                .toList();
+    }
+
     public DealListItemView toView(DealListItem dealListItem) {
         return new DealListItemView(
                 dealListItem.getId(),
@@ -85,6 +95,5 @@ public class DealListItemService {
                 dealListItem.getNote()
         );
     }
-
 
 }
