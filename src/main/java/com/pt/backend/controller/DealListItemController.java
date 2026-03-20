@@ -40,7 +40,9 @@ public class DealListItemController {
             @PathVariable Long dealId,
             @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(dealListItemService.getById(listId, dealId, currentUser));
+        return ResponseEntity.ok(
+                dealListItemService.getById(listId, dealId, currentUser)
+        );
     }
 
     /* UNFILTERED BELOW
