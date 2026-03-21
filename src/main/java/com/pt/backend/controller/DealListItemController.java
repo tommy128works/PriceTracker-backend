@@ -23,8 +23,6 @@ public class DealListItemController {
         this.dealListItemService = dealListItemService;
     }
 
-    //    POST /deal-lists/{listId}/items
-    //    Creates a deal and adds it to the list
     @PostMapping
     public ResponseEntity<DealListItemView> create(
             @PathVariable Long listId,
@@ -35,8 +33,6 @@ public class DealListItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // GET /deal-lists/{listId}/items/{dealId}
-    // READ: Get a single item
     @GetMapping("/{dealId}")
     public ResponseEntity<DealListItemView> getById(
             @PathVariable Long listId,
@@ -48,8 +44,6 @@ public class DealListItemController {
         );
     }
 
-    // GET /deal-lists/{listId}/items
-    // READ: Get all items of a specific deal list
     @GetMapping
     public ResponseEntity<List<DealListItemView>> getAll(
             @PathVariable Long listId,
@@ -60,8 +54,6 @@ public class DealListItemController {
         );
     }
 
-    // PUT /deal-lists/{listId}/items/{dealId} → update note
-    // UPDATE: Update note for a deal in the list
     @PutMapping("/{dealId}")
     public ResponseEntity<DealListItemView> update(
             @PathVariable Long listId,
@@ -79,20 +71,14 @@ public class DealListItemController {
         );
     }
 
-    /* UNFILTERED BELOW
-
-    //    DELETE /deal-lists/{listId}/items/{dealId} → remove deal from list
-    // DELETE: Remove a deal from the list
     @DeleteMapping("/{dealId}")
-    public ResponseEntity<Void> deleteItem(
+    public ResponseEntity<Void> delete(
             @PathVariable Long listId,
             @PathVariable Long dealId,
-            @AuthenticationPrincipal CustomUserDetails user) {
-
-        dealListItemService.removeDealFromList(listId, dealId, user.getId());
+            @AuthenticationPrincipal User currentUser
+    ) {
+        dealListItemService.delete(listId, dealId, currentUser);
         return ResponseEntity.noContent().build();
     }
-
-    */
 
 }

@@ -12,9 +12,7 @@ import com.pt.backend.dto.dealListItem.UpdateDealListItemRequest;
 import com.pt.backend.repository.DealListItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -88,6 +86,17 @@ public class DealListItemService {
                 .orElseThrow(() -> new EntityNotFoundException("Deal list item not found"));
         dealListItem.setNote(request.note());
         return toView(dealListItem);
+    }
+
+    public void delete(
+            Long listId,
+            Long dealId,
+            User currentUser
+    ) {
+        DealListItem dealListItem = dealListItemRepository
+                .findByDealListIdAndDealListUserIdAndDealId(listId, currentUser.getId(), dealId)
+                .orElseThrow(() -> new EntityNotFoundException("Deal list item not found"));
+        dealListItemRepository.delete(dealListItem);
     }
 
     public DealListItemView toView(DealListItem dealListItem) {
