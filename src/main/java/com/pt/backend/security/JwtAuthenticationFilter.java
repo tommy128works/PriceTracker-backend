@@ -48,25 +48,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
+        try {
+            String token = authHeader.substring(7);
+            String username = jwtService.extractUsername(token);
 
-        if (
-                username != null &&
-                        SecurityContextHolder.getContext().getAuthentication() == null
-        ) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (
+                    username != null &&
+                            SecurityContextHolder.getContext().getAuthentication() == null
+            ) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (jwtService.isTokenValid(token)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("expired token");
         }
-
         filterChain.doFilter(request, response);
     }
 }
