@@ -6,6 +6,7 @@ import com.pt.backend.dto.user.CreateUserRequest;
 import com.pt.backend.dto.user.UpdateUserRequest;
 import com.pt.backend.dto.user.UserView;
 import com.pt.backend.repository.UserRepository;
+import com.pt.backend.util.EmailUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,16 @@ public class UserService {
     }
 
     public UserView create(CreateUserRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
+        String email = EmailUtils.normalize(request.email());
+
+        if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Email already in use");
         }
 
         User user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
-                .email(request.email())
+                .email(email)
                 .password(passwordEncoder.encode(request.password()))
                 .build();
 

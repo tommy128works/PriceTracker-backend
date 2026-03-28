@@ -10,6 +10,7 @@ import com.pt.backend.dto.user.UserView;
 import com.pt.backend.security.JwtService;
 import com.pt.backend.security.RefreshTokenService;
 import com.pt.backend.service.UserService;
+import com.pt.backend.util.EmailUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,11 @@ public class AuthController {
             @Valid @RequestBody AuthenticateUserRequest request,
             HttpServletResponse response
     ) throws Exception {
+        String email = EmailUtils.normalize(request.email());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.email(),
+                        email,
                         request.password()
                 )
         );
