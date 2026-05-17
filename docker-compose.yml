@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    image: price-tracker-backend:latest
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+#    environment variables injected using .env instead
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+  db:
+    image: postgres:16
+    env_file:
+      - .env

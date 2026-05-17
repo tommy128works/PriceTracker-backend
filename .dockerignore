@@ -1,0 +1,63 @@
+# =========================
+# Build output (NEVER include)
+# =========================
+target/
+*.jar
+*.war
+*.class
+
+# =========================
+# Maven / Gradle
+# =========================
+.mvn/
+mvnw
+mvnw.cmd
+.gradle/
+build/
+
+# =========================
+# IDE files
+# =========================
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Git
+# =========================
+.git/
+.gitignore
+
+# =========================
+# Spring Boot config (IMPORTANT for secrets)
+# =========================
+src/main/resources/application-dev.yml
+src/main/resources/application-dev.yaml
+src/main/resources/application-prod.yml
+src/main/resources/application-prod.yaml
+
+# =========================
+# Test artifacts
+# =========================
+test-output/
+coverage/
+*.ser
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/

@@ -42,3 +42,4 @@ Thumbs.db
 
 # environment variables
 src/main/resources/application-dev.yaml
+.env
