@@ -26,7 +26,7 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository repository;
     private final String HMAC_ALGO = "HmacSHA256";
-    private final String COOKIE_PATH = "/api/auth";
+    private final String COOKIE_PATH = "/api/auth/refresh";
     private final byte[] secretKey;
     private final int expirationDays;
 
