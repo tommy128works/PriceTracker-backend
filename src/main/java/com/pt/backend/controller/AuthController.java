@@ -76,6 +76,8 @@ public class AuthController {
             @CookieValue("refreshToken") String refreshToken,
             HttpServletResponse response
     ) throws Exception {
+        // prod debugging
+        System.out.println("REFRESH HIT");
 
         RefreshToken oldToken = refreshTokenService.verifyToken(refreshToken);
         User user = oldToken.getUser();
