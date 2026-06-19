@@ -59,7 +59,7 @@ public class RefreshTokenService {
                 .secure(true)
                 .path(COOKIE_PATH)
                 .maxAge(Duration.ofDays(expirationDays))
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
@@ -108,7 +108,7 @@ public class RefreshTokenService {
                 .secure(true)
                 .path(COOKIE_PATH)
                 .maxAge(0)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
