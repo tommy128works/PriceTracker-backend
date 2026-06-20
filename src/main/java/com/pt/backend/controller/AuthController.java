@@ -78,6 +78,7 @@ public class AuthController {
     ) throws Exception {
         // prod debugging
         System.out.println("REFRESH HIT");
+        System.out.println(refreshToken);
 
         RefreshToken oldToken = refreshTokenService.verifyToken(refreshToken);
         User user = oldToken.getUser();
