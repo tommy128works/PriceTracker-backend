@@ -14,7 +14,7 @@ spring:
       properties:
         hibernate:
           format_sql: false
-      open-in-view: true     # should be false for prod
+      open-in-view: false
 
 server:
   port: 8080

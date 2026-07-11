@@ -1,7 +1,6 @@
 package com.pt.backend.controller;
 
 
-import com.pt.backend.domain.RefreshToken;
 import com.pt.backend.domain.User;
 import com.pt.backend.dto.auth.JwtResponse;
 import com.pt.backend.dto.auth.AuthenticateUserRequest;
@@ -73,22 +72,12 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refresh(
-            @CookieValue(name = "refreshToken", required = false) String refreshToken,
+            @CookieValue(name = "refreshToken", required = true) String refreshToken,
             HttpServletResponse response
     ) throws Exception {
-        // prod debugging
-        System.out.println("REFRESH HIT");
-        System.out.println(refreshToken);
+        JwtResponse jwtResponse = refreshTokenService.rotateTokens(refreshToken, response);
 
-        RefreshToken oldToken = refreshTokenService.verifyToken(refreshToken);
-        User user = oldToken.getUser();
-
-        String accessToken = jwtService.generateToken(user);
-        refreshTokenService.createToken(user, response);
-
-        return ResponseEntity.ok(
-                new JwtResponse(accessToken)
-        );
+        return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/logout")

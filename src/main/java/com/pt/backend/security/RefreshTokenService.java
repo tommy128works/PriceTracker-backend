@@ -3,6 +3,7 @@ package com.pt.backend.security;
 
 import com.pt.backend.domain.RefreshToken;
 import com.pt.backend.domain.User;
+import com.pt.backend.dto.auth.JwtResponse;
 import com.pt.backend.repository.RefreshTokenRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -29,15 +30,18 @@ public class RefreshTokenService {
     private final String COOKIE_PATH = "/api/auth/refresh";
     private final byte[] secretKey;
     private final int expirationDays;
+    private final JwtService jwtService;
 
     public RefreshTokenService(
             RefreshTokenRepository repository,
             @Value("${jwt.refresh.hmac.secret}") String secret,
-            @Value("${jwt.refresh.expiration}") int expirationDays
+            @Value("${jwt.refresh.expiration}") int expirationDays,
+            JwtService jwtService
     ) {
         this.repository = repository;
         this.secretKey = secret.getBytes(StandardCharsets.UTF_8);
         this.expirationDays = expirationDays;
+        this.jwtService = jwtService;
     }
 
     public String createToken(
@@ -80,21 +84,21 @@ public class RefreshTokenService {
         return Base64.getEncoder().encodeToString(hmac);
     }
 
-    public RefreshToken verifyToken(String refreshToken) throws Exception {
+    public User verifyToken(String refreshToken) throws Exception {
         String tokenHash = hashToken(refreshToken);
 
         RefreshToken storedTokenHash = repository
                 .findByTokenHash(tokenHash)
                 .orElseThrow(() ->
                         new RuntimeException("Invalid refresh token"));
-
+        User user = storedTokenHash.getUser();
         repository.delete(storedTokenHash);
 
         if (storedTokenHash.getExpiryDate().isBefore(Instant.now())) {
             throw new RuntimeException("Refresh token expired");
         }
 
-        return storedTokenHash;
+        return user;
     }
 
     public void deleteToken(String token) throws Exception {
@@ -111,6 +115,17 @@ public class RefreshTokenService {
                 .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public JwtResponse rotateTokens(
+            String refreshToken,
+            HttpServletResponse response
+    ) throws Exception {
+        User user = this.verifyToken(refreshToken);
+        String accessToken = jwtService.generateToken(user);
+        this.createToken(user, response);
+
+        return new JwtResponse(accessToken);
     }
 
 }
