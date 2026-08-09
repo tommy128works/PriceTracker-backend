@@ -20,11 +20,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DealListService dealListService;
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       DealListService dealListService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.dealListService = dealListService;
     }
 
     public UserView create(CreateUserRequest request) {
@@ -42,6 +45,9 @@ public class UserService {
                 .build();
 
         User saved = userRepository.save(user);
+
+        dealListService.createMasterList(saved);
+
         return toView(saved);
     }
 

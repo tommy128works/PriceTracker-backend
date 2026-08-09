@@ -36,6 +36,16 @@ public class DealListService {
         return toView(saved);
     }
 
+    public void createMasterList(User currentUser) {
+        DealList dealList = DealList.builder()
+                .name("Master List")
+                .user(currentUser)
+                .masterList(true)
+                .build();
+
+        dealListRepository.save(dealList);
+    }
+
     public DealList getEntityById(Long id, User currentUser) {
         DealList dealList = dealListRepository
                 .findByIdAndUserId(id, currentUser.getId())

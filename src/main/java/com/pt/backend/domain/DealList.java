@@ -32,10 +32,12 @@ public class DealList {
     @Builder
     public DealList(
             @NonNull String name,
-            @NonNull User user
+            @NonNull User user,
+            boolean masterList
     ) {
         this.name = name;
         this.user = user;
+        this.masterList = masterList;
     }
 
 }
