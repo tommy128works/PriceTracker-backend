@@ -22,6 +22,9 @@ public class DealList {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private boolean masterList;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
