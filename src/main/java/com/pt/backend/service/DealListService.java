@@ -62,6 +62,14 @@ public class DealListService {
         return toView(dealList);
     }
 
+    public DealListView getMasterList(User currentUser) {
+        DealList dealList = dealListRepository
+                .findByUserIdAndMasterListTrue(currentUser.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Deal list not found"));
+
+        return toView(dealList);
+    }
+
     public List<DealListView> getAll(User currentUser) {
         return dealListRepository
                 .findAllByUserId(currentUser.getId())

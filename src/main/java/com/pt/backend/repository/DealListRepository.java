@@ -13,4 +13,5 @@ public interface DealListRepository
     boolean existsByNameAndUserId(String name, Long userId);
     Optional<DealList> findByIdAndUserId(Long id, Long userId);
     List<DealList> findAllByUserId(Long userId);
+    Optional<DealList> findByUserIdAndMasterListTrue(Long userId);
 }

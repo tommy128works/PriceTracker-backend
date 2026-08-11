@@ -51,6 +51,13 @@ public class DealListController {
         );
     }
 
+    @GetMapping("/master")
+    public ResponseEntity<DealListView> getMasterList(
+            @AuthenticationPrincipal User currentUser
+    ) {
+        return ResponseEntity.ok(dealListService.getMasterList(currentUser));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<DealListView> update(
             @PathVariable Long id,
