@@ -35,21 +35,21 @@ public class Deal {
     @Column(nullable = false)
     private Quantity quantity;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "deal_category",
-            joinColumns = @JoinColumn(name = "deal_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "deal_tag",
-            joinColumns = @JoinColumn(name = "deal_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private Set<Tag> tags = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "deal_category",
+//            joinColumns = @JoinColumn(name = "deal_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id")
+//    )
+//    private Set<Category> categories = new HashSet<>();
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "deal_tag",
+//            joinColumns = @JoinColumn(name = "deal_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag_id")
+//    )
+//    private Set<Tag> tags = new HashSet<>();
 
     @Builder
     public Deal(
